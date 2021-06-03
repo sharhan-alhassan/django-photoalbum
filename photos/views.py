@@ -28,7 +28,7 @@ def addPhoto(request):
 
     if request.method == 'POST':
         data = request.POST
-        image = request.FILES.get('image')
+        images = request.FILES.getlist('images')
 
         if data['category'] != 'none':
             # if the category is there and selected
@@ -40,11 +40,12 @@ def addPhoto(request):
             # else you can decide not to choose any category
             category = None
 
-        photo = Photo.objects.create(
-            category=category,
-            description = data['description'],
-            image = image,
-        )
+        for image in images:
+            photo = Photo.objects.create(
+                category=category,
+                description = data['description'],
+                image = image,
+            )
 
         return redirect('gallery')
 
